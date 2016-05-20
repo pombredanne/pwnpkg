@@ -40,17 +40,17 @@ So let me share the grand vision with you. `pwnpkg` will provide convenient
 yet lightweight framework for building high quality modular CLI tools out of
 the box. This includes:
 
- * minimal [declarative way](https://github.com/redhat-openstack/rdopkg/blob/master/rdopkg/actions.py) to describe both CLI and trasaction-ish program flow
+ * minimal [declarative way](https://github.com/openstack-packages/rdopkg/blob/master/rdopkg/actions.py) to describe both CLI and trasaction-ish program flow
  * lightweight modularity with on-demand module import
  * convenient wrappers for interfacing with the system/shell
- * descriptive and [useful errors](https://github.com/redhat-openstack/rdopkg/blob/master/rdopkg/exception.py)
+ * descriptive and [useful errors](https://github.com/openstack-packages/rdopkg/blob/master/rdopkg/exception.py)
  * nice logging with colors out of the box
 
 Functionality shared across different packaging tools will be provided as
 `pwnpkg` action modules, not limited to:
 
  * parsing and manipulating manipulating `.spec` files
- * interacting with `dist-git` (patches management, auto rebases)
+ * interacting with `distgit` (patches management, auto rebases)
  * automagically detecting package environment
 
 Most of the above functionality is implemented in `rdopkg` already, so it's
@@ -63,7 +63,7 @@ shared across packaging tools such as `fedpkg`, `centpkg`, `rhpkg` or
 succeeds or at least use the provided packaging functionality directly,
 reducing effort duplication as much as possible.
 
-The plan is to create state of the art pluggable CLI framework as wall as
+The plan is to create state of the art pluggable CLI framework as well as
 a set of reusable modules for packaging tooling for RPM based systems that are
 a pleasure to use both from command line and from python. A tool to create
 powerful tools that automate all the steps that dosn't really require human
@@ -82,11 +82,11 @@ friendly operation where `rdopkg` drops to terminal when human interaction is
 required, let's you fix the problem using the tools of your preference
 and then continue the transaction with `rdopkg --continue`.
 
-In `pwnpkg`, I'll refine the concept of *action modules* further to allow
-lightweight modularity and on-demand module imports, as opposed to usual
-[IMPORT ALL THE PYTHON MODULES](https://jruzicka.fedorapeople.org/pkgs/import.jpg)
-madness which can take up to a second of hardcore importing for a simple
-command(!) as seen in `openstackclient`.
+I'll refine the concept of *action modules* further to allow lightweight
+modularity and on-demand module imports, as opposed to usual [IMPORT ALL THE
+PYTHON MODULES](https://jruzicka.fedorapeople.org/pkgs/import.jpg) madness
+which can take up to a second of hardcore importing for a simple command(!) as
+seen in `openstackclient`.
 
 And thus, when `pwnpkg` action module gets imported, its `__init__.py` only
 contains `ACTIONS` structure that that describes module endpoints (actions),
@@ -101,28 +101,19 @@ Thanks to this design, `pwnpkg` modules should be reausable by default while
 not bloating even with lots of different functionality with
 various requirements in one tool.
 
-Initially, the packaging action modules (currently in `rdopkg`) will be part
-of `pwnpkg` repository and python module, but they are likely to be split into
-a separate repo/module eventually to make `pwnpkg` viable choice for any
-python CLI tool.
-
 
 ## Status
 
-I'm in process of spliting and restructuring `rdopkg` into `pwnpkg` and
-packaging modules.
+After trying to work on `pwnpkg` alongside `rdopkg`, I came to a conclusion
+I need to implement everything I need in `rdopkg` and split afterwards due to
+limited bandwidth and overhead of syncing two ever diverging code bases.
 
-I have figured out an action module (plugin) layout that allows on-demand
-imports and sharing between modules and I have a prototype implementation with
-slowly increasing amout of tests.
+### What remains to be done on `rdopkg` before `pwnpkg` can happen
 
-Once I'm happy with `pwnpkg`, I'll rewrite `rdopkg` as a reference
-implementation and a display of `pwnpkg` power. If the community likes it,
-much greater adventure awaits.
-
-I hope to release `pwnpkg` in 2016, but that really depends on the amount of
-work I need to invest into `rdopkg` maintenance and development and also the
-amount of interest from the community.
+ * cleanup - remove obsolete actions and modules
+ * modular actions system (PROTOTYPE WORKING)
+ * factor current code into easily maintainable and pluggable modules
+ * allow easy creation of new tool instances (MOSTLY DONE)
 
 
 ## Interested?
